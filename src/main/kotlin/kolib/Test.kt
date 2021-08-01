@@ -1,0 +1,4 @@
+package kolib
+
+class Test {
+}
