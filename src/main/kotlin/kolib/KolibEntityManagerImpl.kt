@@ -8,9 +8,16 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.metamodel.Metamodel
 
-class KolibEntityManagerImpl(val entities: List<Class<out Any>>, var closed: Boolean, val entityManagerFactory: KolibEntityManagerFactory): KolibEntityManager {
-    fun printAllEntities () {
-        entities.forEach {print(it)}
+class KolibEntityManagerImpl(
+    private val entities: List<Class<out Any>>,
+    private val entityManagerFactory: KolibEntityManagerFactory
+) : KolibEntityManager {
+    private var closed: Boolean = false
+
+    constructor() : this(ArrayList<Class<out Any>>(), KolibEntityManagerFactory())
+
+    fun printAllEntities() {
+        entities.forEach { print(it) }
     }
 
     override fun checkOpen(): Boolean = !closed
