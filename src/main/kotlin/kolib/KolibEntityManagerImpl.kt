@@ -8,13 +8,20 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.CriteriaUpdate
 import javax.persistence.metamodel.Metamodel
 
-class KolibEntityManagerImpl(
-    private val entities: List<Class<out Any>>,
-    private val entityManagerFactory: KolibEntityManagerFactory
-) : KolibEntityManager {
+class KolibEntityManagerImpl : KolibEntityManager {
     private var closed: Boolean = false
+    private var persistenceContext: PersistenceContext? = null
+    private var entities: List<Class<out Any>>
+    private var entityManagerFactory: KolibEntityManagerFactory
 
-    constructor() : this(ArrayList<Class<out Any>>(), KolibEntityManagerFactory())
+    init {
+        this.entities = ArrayList()
+        this.entityManagerFactory = KolibEntityManagerFactory()
+        val statefulPersistenceContext: StatefulPersistenceContext = StatefulPersistenceContext()
+        this.persistenceContext = statefulPersistenceContext
+        val entityEntryContext: EntityEntryContext = EntityEntryContext(statefulPersistenceContext)
+        statefulPersistenceContext.entityEntryContext = entityEntryContext
+    }
 
     fun printAllEntities() {
         entities.forEach { print(it) }
