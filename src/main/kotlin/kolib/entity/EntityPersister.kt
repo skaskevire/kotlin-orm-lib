@@ -1,4 +1,6 @@
-package kolib
+package kolib.entity
+
+import kolib.entity.management.KolibEntityManagerFactory
 
 interface EntityPersister {
     fun getRootEntityName(): String

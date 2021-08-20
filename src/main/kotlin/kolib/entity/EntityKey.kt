@@ -1,4 +1,4 @@
-package kolib
+package kolib.entity
 
 import java.io.Serializable
 

@@ -1,4 +1,9 @@
-package kolib
+package kolib.entity.management.context
+
+import kolib.entity.EntityEntry
+import kolib.entity.EntityEntryContext
+import kolib.entity.EntityKey
+import kolib.entity.EntityPersister
 
 
 class StatefulPersistenceContext : PersistenceContext {

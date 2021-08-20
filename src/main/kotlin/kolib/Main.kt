@@ -1,6 +1,8 @@
 package main.kotlin.kolib
 
 import kolib.*
+import kolib.entity.management.KolibEntityManagerFactory
+import kolib.entity.management.KolibEntityManagerImpl
 
 val KotlinHelloString : String = "Hello from Kotlin!"
 

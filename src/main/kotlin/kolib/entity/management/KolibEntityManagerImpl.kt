@@ -1,5 +1,13 @@
-package kolib
+package kolib.entity.management
 
+import kolib.event.PersistEvent
+import kolib.entity.management.context.PersistenceContext
+import kolib.entity.management.context.StatefulPersistenceContext
+import kolib.entity.EntityEntryContext
+import kolib.entity.EntityPersister
+import kolib.event.listener.PersistEventListener
+import kolib.event.listener.PersistEventListenerImpl
+import kolib.exception.KolibException
 import java.lang.IllegalStateException
 import javax.persistence.*
 import javax.persistence.criteria.CriteriaBuilder
@@ -10,16 +18,17 @@ import javax.persistence.metamodel.Metamodel
 
 class KolibEntityManagerImpl : KolibEntityManager {
     private var closed: Boolean = false
-    private var persistenceContext: PersistenceContext? = null
+    private var persistenceContext: PersistenceContext
     private var entities: List<Class<out Any>>
     private var entityManagerFactory: KolibEntityManagerFactory
+    private val persistEventListener: PersistEventListener = PersistEventListenerImpl()
 
     init {
         this.entities = ArrayList()
         this.entityManagerFactory = KolibEntityManagerFactory()
-        val statefulPersistenceContext: StatefulPersistenceContext = StatefulPersistenceContext()
+        val statefulPersistenceContext = StatefulPersistenceContext()
         this.persistenceContext = statefulPersistenceContext
-        val entityEntryContext: EntityEntryContext = EntityEntryContext(statefulPersistenceContext)
+        val entityEntryContext = EntityEntryContext(statefulPersistenceContext)
         statefulPersistenceContext.entityEntryContext = entityEntryContext
     }
 
@@ -28,6 +37,13 @@ class KolibEntityManagerImpl : KolibEntityManager {
     }
 
     override fun checkOpen(): Boolean = !closed
+    override fun getPersistenceContext(): PersistenceContext {
+        return this.persistenceContext
+    }
+
+    override fun getEntityPersister(entityName: String, obj: Any): EntityPersister {
+        this.entityManagerFactory.metamodel
+    }
 
     override fun contains(p0: Any?): Boolean {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -54,7 +70,8 @@ class KolibEntityManagerImpl : KolibEntityManager {
     }
 
     override fun persist(p0: Any?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val persistEvent = PersistEvent(this, p0 ?: throw KolibException("Entity value is not provided"), null)
+        persistEventListener.onPersist(persistEvent)
     }
 
     override fun flush() {

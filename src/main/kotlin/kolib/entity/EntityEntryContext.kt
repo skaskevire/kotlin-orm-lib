@@ -1,5 +1,6 @@
-package kolib
+package kolib.entity
 
+import kolib.entity.management.context.PersistenceContext
 import java.util.*
 
 class EntityEntryContext(val persistenceContext: PersistenceContext) {

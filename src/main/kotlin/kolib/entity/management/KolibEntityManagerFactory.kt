@@ -1,4 +1,4 @@
-package kolib
+package kolib.entity.management
 
 import javax.persistence.*
 import javax.persistence.criteria.CriteriaBuilder

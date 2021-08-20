@@ -1,4 +1,4 @@
-package kolib
+package kolib.entity
 
 interface ManagedEntity {
     fun getEntityInstance(): Any?

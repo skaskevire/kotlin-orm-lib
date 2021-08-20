@@ -1,4 +1,4 @@
-package kolib
+package kolib.entity
 
 class ManagedEntityImpl(private val entity: Any) : ManagedEntity {
     private var entityEntry: EntityEntry? = null

@@ -1,4 +1,4 @@
-package kolib
+package kolib.entity
 
 class BasicEntityEntry: EntityEntry {
     override fun getStatus(): Status {

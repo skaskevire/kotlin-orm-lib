@@ -1,5 +1,6 @@
-package kolib
+package kolib.entity
 
+import kolib.entity.management.KolibEntityManagerFactory
 
 
 interface Type {

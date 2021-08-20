@@ -1,4 +1,8 @@
-package kolib
+package kolib.entity.management.context
+
+import kolib.entity.EntityEntry
+import kolib.entity.EntityKey
+import kolib.entity.EntityPersister
 
 interface PersistenceContext {
     fun addEntity(key: EntityKey, entity: Any)
