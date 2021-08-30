@@ -1,6 +1,7 @@
 package kolib.event.listener
 
 import kolib.entity.EntityEntry
+import kolib.entity.EntityKey
 import kolib.entity.EntityState
 import kolib.entity.Status
 import kolib.entity.management.KolibEntityManager
@@ -14,7 +15,7 @@ class PersistEventListenerImpl : PersistEventListener {
         val entityEntry: EntityEntry? = entityManager?.getPersistenceContext()?.getEntry(event.obj)
         val entityState = resolveEntityState(event.obj, entityEntry)
         when(entityState) {
-            EntityState.TRANSIENT -> entityIsTransient()
+            EntityState.TRANSIENT -> entityIsTransient(event)
             EntityState.PERSISTENT -> entityIsPersistent()
             EntityState.DELETED -> entityIsDeleted()
             else -> {
@@ -23,7 +24,11 @@ class PersistEventListenerImpl : PersistEventListener {
         }
     }
 
-    private fun entityIsTransient() {
+    private fun entityIsTransient(event: PersistEvent) {
+        val entityManager = event.getEntityManager() as KolibEntityManager
+        val entityPersister = entityManager.getEntityPersister(null, event.obj)
+        val id = entityPersister.getIdentifierGenerator().generate(entityManager, event.obj) ?: throw KolibException("id was not generated")
+
 
     }
 
